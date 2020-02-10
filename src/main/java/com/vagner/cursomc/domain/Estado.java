@@ -33,8 +33,6 @@ public class Estado implements Serializable{
 		this.nome = nome;
 	}
 
-
-
 	public Integer getId() {
 		return id;
 	}
@@ -83,7 +81,5 @@ public class Estado implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
 
 }
