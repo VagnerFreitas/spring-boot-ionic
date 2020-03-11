@@ -1,5 +1,6 @@
 package com.vagner.cursomc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.vagner.cursomc.domain.Cliente;
 import com.vagner.cursomc.dto.ClienteDTO;
+import com.vagner.cursomc.dto.ClienteNewDTO;
 import com.vagner.cursomc.services.ClienteService;
 
 @RestController
@@ -43,6 +46,15 @@ public class ClienteResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO clienteNewDTO){
+		Cliente cliente = service.insert(service.fromDTO(clienteNewDTO));
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
+		
+		return ResponseEntity.created(uri).build();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
